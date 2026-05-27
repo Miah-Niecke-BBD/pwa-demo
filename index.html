@@ -1,170 +1,453 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>PWA Demo</title>
 
   <link rel="manifest" href="manifest.json" />
 
+  <meta
+    name="theme-color"
+    content="#9d94fb"
+  />
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 40px;
-      background: #f9f9f9;
-      color: #111;
+
+    * {
+      box-sizing: border-box;
     }
 
-    .card {
-      background: white;
-      padding: 24px;
-      border-radius: 20px;
-      max-width: 400px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    body {
+
+      margin: 0;
+
+      padding: 2.5rem;
+
+      min-height: 100vh;
+
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+      background: #f9f9f9;
+
+      color: #111;
+
+      font-family: Arial, sans-serif;
+    }
+
+    main {
+
+      width: 100%;
+
+      max-width: 26rem;
+
+      padding: 1.75rem;
+
+      background: #ffffff;
+
+      border: 0.0625rem solid #ecebe9;
+
+      border-radius: 1.5rem;
+
+      box-shadow:
+        0 0.625rem 1.875rem
+        rgba(0, 0, 0, 0.08);
     }
 
     h1 {
+
       margin-top: 0;
+
+      margin-bottom: 0.75rem;
+
+      font-size: 20pt;
     }
 
-    .status {
-      margin-bottom: 20px;
-      padding: 12px;
-      border-radius: 12px;
+    p {
+
+      line-height: 1.5;
+
+      color: #555;
+
+      font-size: 11pt;
+    }
+
+    section {
+
+      margin-top: 1.5rem;
+    }
+
+    output {
+
+      display: block;
+
+      margin-top: 1.25rem;
+
+      margin-bottom: 1.25rem;
+
+      padding: 0.875rem;
+
+      border-radius: 0.875rem;
+
       font-weight: bold;
+
+      font-size: 11pt;
     }
 
     .online {
+
       background: #dcfce7;
+
       color: #166534;
     }
 
     .offline {
+
       background: #fee2e2;
+
       color: #991b1b;
     }
 
     button {
+
       width: 100%;
-      padding: 14px;
-      margin-top: 12px;
+
+      margin-top: 0.875rem;
+
+      padding: 0.875rem;
+
       border: none;
-      border-radius: 12px;
-      background: black;
-      color: white;
-      font-size: 16px;
+
+      border-radius: 0.875rem;
+
+      background: #9d94fb;
+
+      color: #ffffff;
+
+      font-size: 11pt;
+
       cursor: pointer;
+
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
     }
 
     button:hover {
+
       opacity: 0.9;
+
+      transform:
+        translateY(-0.125rem);
     }
 
-    .offline-box {
-      margin-top: 20px;
-      padding: 16px;
-      border-radius: 12px;
-      background: #eef2ff;
+    aside {
+
       display: none;
+
+      margin-top: 1.5rem;
+
+      padding: 1rem;
+
+      border-radius: 1rem;
+
+      background: #eef2ff;
     }
+
+    aside strong {
+
+      font-size: 11pt;
+    }
+
+    menu {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, 1fr);
+
+      gap: 0.75rem;
+
+      padding: 0;
+
+      margin-top: 1.5rem;
+
+      list-style: none;
+    }
+
+    li {
+
+      padding: 0.875rem;
+
+      border-radius: 0.875rem;
+
+      border: 0.0625rem solid #ecebe9;
+
+      background: #f8f8ff;
+
+      text-align: center;
+
+      color: #5b54b5;
+
+      font-weight: 600;
+
+      font-size: 10pt;
+    }
+
+    time {
+
+      display: block;
+
+      margin-top: 1rem;
+
+      color: #666;
+
+      font-size: 9pt;
+    }
+
   </style>
 </head>
 
 <body>
 
-  <div class="card">
+  <main>
 
-    <h1>PWA Demo 🚀</h1>
+    <header>
 
-    <div id="status" class="status online">
-      You are online
-    </div>
+      <h1>
+        PWA Demo 🚀
+      </h1>
 
-    <p>
-      This app works offline and supports notifications.
-    </p>
+      <p>
+        This Progressive Web App supports:
+        offline mode,
+        notifications,
+        installability,
+        and caching.
+      </p>
 
-    <button id="notifyBtn">
-      Trigger Notification
-    </button>
+    </header>
 
-    <button id="offlineBtn">
-      Offline Action
-    </button>
+    <section>
 
-    <div id="offlineBox" class="offline-box">
-      You are currently offline.<br><br>
-      Cached content still works 🎉
-    </div>
+      <output
+        id="status"
+        class="online"
+      >
+        You are online
+      </output>
 
-  </div>
+      <button id="notifyBtn">
+        Trigger Notification
+      </button>
+
+      <button id="offlineBtn">
+        Offline Action
+      </button>
+
+    </section>
+
+    <aside id="offlineBox">
+
+      <strong>
+        Offline Mode Enabled 📡
+      </strong>
+
+      <p>
+        Cached content is still working.
+      </p>
+
+      <time id="lastUpdated"></time>
+
+    </aside>
+
+    <menu>
+
+      <li>
+        Installable
+      </li>
+
+      <li>
+        Offline Ready
+      </li>
+
+      <li>
+        Notifications
+      </li>
+
+      <li>
+        Fast Loading
+      </li>
+
+    </menu>
+
+  </main>
 
   <script>
 
-    const statusEl = document.getElementById("status");
-    const offlineBox = document.getElementById("offlineBox");
-    const notifyBtn = document.getElementById("notifyBtn");
-    const offlineBtn = document.getElementById("offlineBtn");
+    const statusEl =
+      document.getElementById("status");
 
-    function updateOnlineStatus() {
+    const offlineBox =
+      document.getElementById("offlineBox");
 
-      if (navigator.onLine) {
+    const notifyBtn =
+      document.getElementById("notifyBtn");
 
-        statusEl.textContent = "You are online";
-        statusEl.className = "status online";
+    const offlineBtn =
+      document.getElementById("offlineBtn");
 
-        offlineBox.style.display = "none";
+    const lastUpdated =
+      document.getElementById("lastUpdated");
 
-      } else {
+    let isOffline = false;
 
-        statusEl.textContent = "You are offline";
-        statusEl.className = "status offline";
+    async function checkConnection() {
 
-        offlineBox.style.display = "block";
+      try {
+
+        await fetch(
+          window.location.href,
+          {
+            method: "HEAD",
+            cache: "no-store"
+          }
+        );
+
+        isOffline = false;
+
+        statusEl.textContent =
+          "You are online";
+
+        statusEl.className =
+          "online";
+
+        offlineBox.style.display =
+          "none";
+
+      } catch {
+
+        isOffline = true;
+
+        statusEl.textContent =
+          "You are offline";
+
+        statusEl.className =
+          "offline";
+
+        offlineBox.style.display =
+          "block";
+
+        lastUpdated.textContent =
+          "Cached at: " +
+          new Date()
+            .toLocaleTimeString();
       }
     }
 
-    window.addEventListener("online", updateOnlineStatus);
-    window.addEventListener("offline", updateOnlineStatus);
+    setInterval(
+      checkConnection,
+      3000
+    );
 
-    updateOnlineStatus();
+    checkConnection();
 
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("service-worker.js");
+    if (
+      "serviceWorker"
+      in navigator
+    ) {
+
+      navigator
+        .serviceWorker
+        .register(
+          "service-worker.js"
+        )
+        .then(() => {
+
+          console.log(
+            "Service Worker Registered"
+          );
+        });
     }
 
-    notifyBtn.addEventListener("click", async () => {
+    notifyBtn
+      .addEventListener(
+        "click",
+        async () => {
 
-      const permission = await Notification.requestPermission();
+          const permission =
 
-      if (permission === "granted") {
+            await Notification
+              .requestPermission();
 
-        const registration = await navigator.serviceWorker.ready;
+          if (
+            permission ===
+            "granted"
+          ) {
 
-        registration.showNotification("PWA Demo 🚀", {
-          body: "This notification came from your PWA!",
-          icon: "icon.png"
-        });
-      }
-    });
+            const registration =
 
-    offlineBtn.addEventListener("click", async () => {
+              await navigator
+                .serviceWorker
+                .ready;
 
-      if (!navigator.onLine) {
+            registration
+              .showNotification(
+                "PWA Demo 🚀",
+                {
+                  body:
+                    "This notification came from your PWA!",
 
-        const registration = await navigator.serviceWorker.ready;
+                  icon:
+                    "icon.png"
+                }
+              );
+          }
+        }
+      );
 
-        registration.showNotification("Offline Mode 📡", {
-          body: "You triggered this while offline!",
-          icon: "icon.png"
-        });
+    offlineBtn
+      .addEventListener(
+        "click",
+        async () => {
 
-      } else {
+          if (isOffline) {
 
-        alert("Turn off your internet first to test offline mode.");
-      }
-    });
+            const registration =
+
+              await navigator
+                .serviceWorker
+                .ready;
+
+            registration
+              .showNotification(
+                "Offline Mode 📡",
+                {
+                  body:
+                    "This action worked while offline!",
+
+                  icon:
+                    "icon.png"
+                }
+              );
+
+          } else {
+
+            alert(
+              "Turn off your internet first."
+            );
+          }
+        }
+      );
 
   </script>
 
