@@ -2,17 +2,171 @@
 <html>
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
   <title>PWA Demo</title>
+
   <link rel="manifest" href="manifest.json" />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background: #f9f9f9;
+      color: #111;
+    }
+
+    .card {
+      background: white;
+      padding: 24px;
+      border-radius: 20px;
+      max-width: 400px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    .status {
+      margin-bottom: 20px;
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: bold;
+    }
+
+    .online {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .offline {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 12px;
+      border: none;
+      border-radius: 12px;
+      background: #9d94fb;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .offline-box {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 12px;
+      background: #eef2ff;
+      display: none;
+    }
+  </style>
 </head>
+
 <body>
-  <h1>PWA Demo</h1>
-  <p>This app works offline 🚀</p>
+
+  <div class="card">
+
+    <h1>PWA Demo 🚀</h1>
+
+    <div id="status" class="status online">
+      You are online
+    </div>
+
+    <p>
+      This app works offline and supports notifications.
+    </p>
+
+    <button id="notifyBtn">
+      Trigger Notification
+    </button>
+
+    <button id="offlineBtn">
+      Offline Action
+    </button>
+
+    <div id="offlineBox" class="offline-box">
+      You are currently offline.<br><br>
+      Cached content still works 🎉
+    </div>
+
+  </div>
 
   <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js');
+
+    const statusEl = document.getElementById("status");
+    const offlineBox = document.getElementById("offlineBox");
+    const notifyBtn = document.getElementById("notifyBtn");
+    const offlineBtn = document.getElementById("offlineBtn");
+
+    function updateOnlineStatus() {
+
+      if (navigator.onLine) {
+
+        statusEl.textContent = "You are online";
+        statusEl.className = "status online";
+
+        offlineBox.style.display = "none";
+
+      } else {
+
+        statusEl.textContent = "You are offline";
+        statusEl.className = "status offline";
+
+        offlineBox.style.display = "block";
+      }
     }
+
+    window.addEventListener("online", updateOnlineStatus);
+    window.addEventListener("offline", updateOnlineStatus);
+
+    updateOnlineStatus();
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
+
+    notifyBtn.addEventListener("click", async () => {
+
+      const permission = await Notification.requestPermission();
+
+      if (permission === "granted") {
+
+        const registration = await navigator.serviceWorker.ready;
+
+        registration.showNotification("PWA Demo 🚀", {
+          body: "This notification came from your PWA!",
+          icon: "icon.png"
+        });
+      }
+    });
+
+    offlineBtn.addEventListener("click", async () => {
+
+      if (!navigator.onLine) {
+
+        const registration = await navigator.serviceWorker.ready;
+
+        registration.showNotification("Offline Mode 📡", {
+          body: "You triggered this while offline!",
+          icon: "icon.png"
+        });
+
+      } else {
+
+        alert("Turn off your internet first to test offline mode.");
+      }
+    });
+
   </script>
+
 </body>
 </html>
